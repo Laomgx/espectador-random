@@ -12,7 +12,7 @@ async function getViewer(channel) {
 
         // Manejo de errores para la solicitud del estado del canal
         if (!response.ok) {
-            const errorDetails = await response.json(); // Captura el cuerpo de la respuesta
+            const errorDetails = await response.json();
             console.error('Error en la petición:', response.status, errorDetails);
             return `Error: ${errorDetails.message || 'Error desconocido'}`; // Muestra el mensaje de error
         }
@@ -21,7 +21,7 @@ async function getViewer(channel) {
 
         // Verificar si el canal está en línea
         if (data.data.length === 0) {
-            return 'Offline'; // Si no está en vivo
+            return 'El canal está offline.'; // Mensaje más claro si no está en vivo
         }
 
         // Petición para obtener los viewers del canal solo si está en vivo
@@ -29,7 +29,7 @@ async function getViewer(channel) {
         
         // Manejo de errores para la solicitud de chatters
         if (!viewerResponse.ok) {
-            const viewerErrorDetails = await viewerResponse.json(); // Captura el cuerpo de la respuesta
+            const viewerErrorDetails = await viewerResponse.json();
             console.error('Error en la petición de chatters:', viewerResponse.status, viewerErrorDetails);
             return `Error: ${viewerErrorDetails.message || 'Error desconocido'}`; // Muestra el mensaje de error
         }
@@ -39,7 +39,7 @@ async function getViewer(channel) {
 
         // Verificar si no hay viewers
         if (viewers.length === 0) {
-            return 'No viewers'; // Si no hay viewers
+            return 'El canal está en vivo, pero no hay viewers.'; // Mensaje más claro si no hay viewers
         }
 
         // Seleccionar un viewer aleatorio
@@ -50,7 +50,7 @@ async function getViewer(channel) {
 
     } catch (error) {
         console.error('Error:', error);
-        return 'Error'; // Mensaje corto si hay un error
+        return 'Error al obtener los datos.'; // Mensaje corto si hay un error
     }
 }
 
