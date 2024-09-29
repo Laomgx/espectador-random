@@ -14,10 +14,11 @@ async function getViewer(channel) {
 
         // Verificar si el canal está en línea
         if (data.data.length === 0) {
-            return 'No en línea'; // Mensaje corto si no está en línea
+            // Si no está en vivo, devolver un mensaje más claro
+            return 'El canal no está transmitiendo en vivo';
         }
 
-        // Petición para obtener los viewers del canal
+        // Petición para obtener los viewers del canal solo si está en vivo
         const viewerResponse = await fetch(`https://tmi.twitch.tv/group/user/${channel}/chatters`);
         const viewerData = await viewerResponse.json();
         const viewers = viewerData.chatters.viewers;
@@ -32,7 +33,7 @@ async function getViewer(channel) {
 
         // Verificar si el nombre del viewer es muy largo (esto es raro, pero mejor prevenir)
         return randomViewer.length > 400 ? randomViewer.substring(0, 400) : randomViewer;
-        
+
     } catch (error) {
         console.error('Error:', error);
         return 'Error'; // Mensaje corto si hay un error
@@ -43,6 +44,6 @@ async function getViewer(channel) {
 window.onload = async () => {
     const result = await getViewer(defaultChannel);
     
-    // Limitar la longitud del texto que se muestra en la página
+    // Mostrar el resultado en la página
     document.body.innerText = result.length > 400 ? result.substring(0, 400) : result;
 };
