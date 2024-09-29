@@ -1,4 +1,4 @@
-const defaultChannel = 'abad_aa'; // Canal por defecto
+const defaultChannel = 'nAts'; // Canal por defecto
 
 async function getViewer(channel) {
     try {
