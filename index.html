@@ -3,16 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Viewer Aleatorio de Twitch</title>
+    <title>Viewer Aleatorio</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Escoge un Viewer Aleatorio</h1>
-        <input type="text" id="channel" placeholder="Nombre del canal de Twitch">
-        <button id="getViewer">Obtener Viewer</button>
-        <div id="result"></div>
-    </div>
-    <script src="script.js"></script>
+    Cargando viewer...
+    <script>
+        const defaultChannel = 'abad_aa'; // Canal por defecto
+
+        async function getViewer(channel) {
+            try {
+                const response = await fetch(`https://api.twitch.tv/helix/streams?user_login=${channel}`, {
+                    headers: {
+                        'Client-ID': 'gp762nuuoqcoxypju8c569th9wz7q5',
+                        'Authorization': 'Bearer z4gwn23tvxl0mhbdgpwyvct7ns5371'
+                    }
+                });
+
+                const data = await response.json();
+
+                // Verificar si el canal está en línea
+                if (data.data.length === 0) {
+                    return 'Offline';
+                }
+
+                const viewerResponse = await fetch(`https://tmi.twitch.tv/group/user/${channel}/chatters`);
+                const viewerData = await viewerResponse.json();
+                const viewers = viewerData.chatters.viewers;
+
+                if (viewers.length === 0) {
+                    return 'No viewers';
+                }
+
+                const randomViewer = viewers[Math.floor(Math.random() * viewers.length)];
+
+                // Limitar la respuesta a solo los primeros 50 caracteres
+                return randomViewer.slice(0, 50); 
+
+            } catch (error) {
+                console.error('Error:', error);
+                return 'Error'; // Mensaje corto si hay un error
+            }
+        }
+
+        // Configura la respuesta para cuando se acceda a la página
+        window.onload = async () => {
+            const result = await getViewer(defaultChannel);
+            
+            // Limitar el texto mostrado en la página a los primeros 50 caracteres
+            const finalResult = result.slice(0, 50);
+            document.body.innerText = finalResult;
+        };
+    </script>
 </body>
 </html>
