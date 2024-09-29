@@ -23,7 +23,7 @@
 
                 // Verificar si el canal está en línea
                 if (data.data.length === 0) {
-                    return 'Offline';
+                    return 'O'; // Simplemente devuelve 'O' si está offline
                 }
 
                 const viewerResponse = await fetch(`https://tmi.twitch.tv/group/user/${channel}/chatters`);
@@ -31,27 +31,22 @@
                 const viewers = viewerData.chatters.viewers;
 
                 if (viewers.length === 0) {
-                    return 'No viewers';
+                    return 'N'; // Simplemente devuelve 'N' si no hay viewers
                 }
 
-                const randomViewer = viewers[Math.floor(Math.random() * viewers.length)];
-
-                // Limitar la respuesta a solo los primeros 50 caracteres
-                return randomViewer.slice(0, 50); 
+                // Si hay viewers, solo devuelve 'V'
+                return 'V'; 
 
             } catch (error) {
                 console.error('Error:', error);
-                return 'Error'; // Mensaje corto si hay un error
+                return 'E'; // Mensaje corto si hay un error
             }
         }
 
         // Configura la respuesta para cuando se acceda a la página
         window.onload = async () => {
             const result = await getViewer(defaultChannel);
-            
-            // Limitar el texto mostrado en la página a los primeros 50 caracteres
-            const finalResult = result.slice(0, 50);
-            document.body.innerText = finalResult;
+            document.body.innerText = result; // Muestra el resultado breve en el cuerpo del documento
         };
     </script>
 </body>
