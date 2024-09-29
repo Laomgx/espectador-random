@@ -12,9 +12,9 @@ async function getViewer(channel) {
 
         // Manejo de errores para la solicitud del estado del canal
         if (!response.ok) {
-            const errorDetails = await response.json();
+            const errorDetails = await response.json(); // Captura el cuerpo de la respuesta
             console.error('Error en la petición:', response.status, errorDetails);
-            return `Error: ${errorDetails.message}`; // Muestra el mensaje de error
+            return `Error: ${errorDetails.message || 'Error desconocido'}`; // Muestra el mensaje de error
         }
 
         const data = await response.json();
@@ -29,9 +29,9 @@ async function getViewer(channel) {
         
         // Manejo de errores para la solicitud de chatters
         if (!viewerResponse.ok) {
-            const viewerErrorDetails = await viewerResponse.json();
+            const viewerErrorDetails = await viewerResponse.json(); // Captura el cuerpo de la respuesta
             console.error('Error en la petición de chatters:', viewerResponse.status, viewerErrorDetails);
-            return `Error: ${viewerErrorDetails.message}`; // Muestra el mensaje de error
+            return `Error: ${viewerErrorDetails.message || 'Error desconocido'}`; // Muestra el mensaje de error
         }
 
         const viewerData = await viewerResponse.json();
