@@ -22,8 +22,9 @@ async function getViewer(channel) {
             return 'No hay viewers disponibles.';
         }
 
+        // Seleccionar un viewer aleatorio
         const randomViewer = viewers[Math.floor(Math.random() * viewers.length)];
-        return `Viewer Aleatorio: ${randomViewer}`;
+        return randomViewer; // Retorna solo el nombre del viewer
     } catch (error) {
         console.error('Error:', error);
         return 'Hubo un error al obtener los datos.';
